@@ -2,6 +2,10 @@ from .. utils import doc_params
 from ..tools._utils import choose_representation, doc_use_rep, doc_n_pcs
 from .. import settings
 from .. import logging as logg
+from ..logging import (
+    _VERBOSITY_LEVELS_FROM_STRINGS,
+    _settings_verbosity_greater_or_equal_than,
+)
 
 
 @doc_params(doc_n_pcs=doc_n_pcs, use_rep=doc_use_rep)
@@ -108,7 +112,7 @@ def tsne(
         X_tsne = tsne.fit_transform(X)
     # update AnnData instance
     adata.obsm['X_tsne'] = X_tsne  # annotate samples with tSNE coordinates
-    logg.info('    finished', time=True, end=' ' if settings.verbosity > 2 else '\n')
+    logg.info('    finished', time=True, end=' ' if _settings_verbosity_greater_or_equal_than(3) else '\n')
     logg.hint('added\n'
               '    \'X_tsne\', tSNE coordinates (adata.obsm)')
     return adata if copy else None
